@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block main %}
+<script>
+    $(function () {
+        window.navVM.notLogin=false;
+    });
+</script>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>{{operation}} successfully!</h1>
+			<div class="alert alert-success"><strong>Well done!</strong>You successfully {{operation}} as {{name}}!</div>
+			<p><a href="/">Back to home</a></p>
+		</div>
+	</div>
+</div>
+{% endblock %}

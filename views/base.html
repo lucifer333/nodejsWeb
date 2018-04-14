@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>会计学堂</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="学习会计">
+		<link rel="stylesheet" href="../static/css/bootstrap.css">
+		<script src="../static/js/jquery-3.3.1.js"></script>
+		<script src="../static/js/bootstrap.js"></script>
+		<script src="../static/js/vue.min.js"></script>
+		<style>
+			.copyright{
+				margin: 0 auto;
+				text-align: center;
+			}
+		</style>
+		<script>
+			$(function () {
+				var navVM=new Vue({
+					el:'#bs-navbar',
+					data:{
+						searchTxt:'',
+                        notLogin:true
+					},
+					methods:{
+						search:function (e) {
+							e.preventDefault();
+							$.ajax({
+								type:"post",
+								url:"/search",
+								data: this.$data.searchTxt
+							});
+						}
+					}
+				});
+				window.navVM=navVM;
+			});
+		</script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-static-top">
+			<div class="container-fluid">	
+				
+				<div class="collapse navbar-collapse" id="bs-navbar">
+					<ul class="nav navbar-nav">
+						<li><a href="/">首页</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+								aria-haspopup="true" aria-expanded="false">会计教程 <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">会计从业</a></li>
+								<li><a href="#">会计初级</a></li>
+								<li><a href="#">会计中级</a></li>
+								<li><a href="#">会计高级</a></li>
+								<li><a href="#">注册会计师</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+								aria-haspopup="true" aria-expanded="false">office教程 <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">excel教程</a></li>
+								<li><a href="#">word教程</a></li>
+								<li><a href="#">ppt教程</a></li>
+								<li><a href="#">visio教程</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+								aria-haspopup="true" aria-expanded="false">语言大师 <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">粤语</a></li>
+								<li><a href="#">普通话</a></li>
+								<li><a href="#">英语</a></li>
+								<li><a href="#">日语</a></li>
+								<li><a href="#">德语</a></li>
+							</ul>
+						</li>
+						<li><a href="#">真题库</a></li>
+					</ul>
+					
+					<ul class="nav navbar-nav navbar-right" v-if="notLogin">
+						<li><a data-toggle="modal" data-target="#register" href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+						<li><a data-toggle="modal" data-target="#login" href=""><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+					</ul>
+
+					<form class="navbar-form navbar-right" v-on:submit.prevent="search">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="search" v-model="searchTxt"/>
+						</div>
+						<button type="submit" class="btn btn-primary">Go</button>
+					</form>
+								
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+		
+		<!--注册窗口-->
+		<div id="register" class="modal fade"  tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<button class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<div class="modal-title">
+						<h1 class="text-center">注册</h1>
+					</div>
+					<div class="modal-body">
+						<form class="form-group" action="/register" method="post">
+							<div class="form-group">
+								<label>用户名</label>
+								<input name="name" class="form-control" type="text" placeholder="6-15位字母或数字"/>
+							</div>
+							<div class="form-group">
+								<label>密码</label>
+								<input name="password" class="form-control" type="password" placeholder="至少6位字母或数字" />
+							</div>
+							<div class="form-group">
+								<label>再次输入密码</label>
+								<input class="form-control" type="password" placeholder="至少6位字母或数字"/>
+							</div>
+							<div class="form-group">
+								<label>邮箱</label>
+								<input name="email" class="form-control" type="email" placeholder="例如:123@123.com"/>
+							</div>
+							<div class="text-right">
+								<button class="btn btn-primary" type="submit">提交</button>
+								<button class="btn btn-danger" data-dismiss="modal">取消</button>
+							</div>
+							<a href="#" data-toggle="modal" data-dismiss="modal" data-target="#login">已有账号?点我登录</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div><!--register-->
+		
+		<!--登录窗口-->
+		<div id="login" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<button class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<div class="modal-title">
+						<h1 class="text-center">登录</h1>
+					</div>
+					<div class="modal-body">
+						<form class="form-group" action="/signin" method="post">
+							<div class="form-group">
+								<label>用户名</label>
+								<input name="name" class="form-control" type="text" placeholder=""/>
+							</div>
+							<div class="form-group">
+								<label>密码</label>
+								<input name="password" class="form-control" type="password" placeholder=""/>
+							</div>
+							<div class="text-right">
+								<button class="btn btn-primary" type="submit">登录</button>
+								<button class="btn btn-danger" data-dismiss="modal">取消</button>
+							</div>
+							<a href="#" data-toggle="modal" data-dismiss="modal" data-target="#register">还没有账号?点我注册</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div><!--login-->
+
+        <div id="important" style="color:#cdbfe3; background-color:#6f5499; padding:30px 0; margin:-20px 0 20px 0;">
+            <div class="container">
+                <h1 style="color:#fff; font-size:60px">会计学堂</h1>
+                <p style="font-size:24px; line-height:48px">学好会计，年薪百万不是梦，走上人生巅峰，赢取白富美！</p>
+            </div>;
+        </div>
+		{% block main %}{% endblock %}
+		
+		<footer style="background-color:#ddd; padding: 20px 0;">
+			<div class="container">
+				
+				<div class="row">
+					<div class="col-md-3">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">在线题库</h4>
+							</div>
+							<div class="panel-body">
+								<p>测试测试</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">下载</h4>
+							</div>
+							<div class="panel-body">
+								<p>测试测试</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">站点信息</h4>
+							</div>
+							<div class="panel-body">
+								<ul>
+                                    <li><a href="#">意见反馈</a></li>
+                                    <li><a href="#">免责声明</a></li>
+                                    <li><a href="#">关于我们</a></li>
+                                </ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">关注微信</h4>
+							</div>
+							<div class="panel-body">
+								<p>测试测试</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="copyright">
+					<span>Copyright © <a href="#">会计学堂</a></span>
+					<span> | <a href="#">京ICP备xxxxx号</a></span>
+					<span> | <a href="#">京公网安备xxxxxxxx</a></span>
+				</div>
+				
+			</div>
+		</footer>
+
+	</body>
+</html>
